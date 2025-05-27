@@ -22,7 +22,7 @@ const ContactSection = () => {
     e.preventDefault();
     setStatus('');
     try {
-      await axios.post('http://localhost:3000/send-message', formData);
+      await axios.post('https://akshaymahore-backend.vercel.app/send-message', formData);
       setStatus('Message sent successfully!');
       setFormData({ Name: '', Email: '', Message: '' });
     } catch (error) {

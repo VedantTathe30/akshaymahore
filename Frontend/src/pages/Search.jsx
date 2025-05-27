@@ -9,7 +9,7 @@ const Search = () => {
   const [query, setQuery] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:3000/all-data')
+    axios.get('https://akshaymahore-backend.vercel.app/all-data')
       .then(response => setPatients(response.data))
       .catch(error => console.error('Error fetching patient data:', error));
   }, []);

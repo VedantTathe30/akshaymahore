@@ -9,7 +9,7 @@ const Logout = () => {
 useEffect(() => {
   const doLogout = async () => {
     try {
-      await axios.post('http://localhost:3000/logout');
+      await axios.post('https://akshaymahore-backend.vercel.app/logout');
       logout(); 
       console.log("About to navigate");
       navigate('/login');

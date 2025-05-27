@@ -10,7 +10,7 @@ const ReadMessages = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:3000/read-messages')
+    axios.get('https://akshaymahore-backend.vercel.app/read-messages')
       .then(res => {
         setMessages(res.data); // assume array of { name, email, message, date }
         setLoading(false);

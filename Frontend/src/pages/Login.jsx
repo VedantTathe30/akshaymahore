@@ -18,7 +18,7 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      const response = await axios.post('http://localhost:3000/login', {
+      const response = await axios.post('https://akshaymahore-backend.vercel.app/login', {
         email: form.email,
         password: form.password,
       });
