@@ -12,7 +12,7 @@ app.use(cors());
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://akshaymahore-backend.vercel.app'
+  'https://akshaymahore.vercel.app'
 ];
 
 app.use(cors({
