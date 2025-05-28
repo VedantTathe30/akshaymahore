@@ -1,8 +1,9 @@
 // src/pages/ReadMessages.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Sidebar from '../components/Sidebar';
+import AdminSidebar from '../components/AdminSidebar';
 import { Link } from 'react-router-dom';
+import Loader from '../components/Loader';
 
 const ReadMessages = () => {
   const [messages, setMessages] = useState([]);
@@ -23,7 +24,7 @@ const ReadMessages = () => {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      <Sidebar />
+      <AdminSidebar />
       <div className="flex-1 overflow-y-auto p-6">
         <div className="mb-6">
           <Link to="/admin" className="inline-flex items-center px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600">
@@ -33,7 +34,7 @@ const ReadMessages = () => {
 
         <h2 className="text-2xl font-bold mb-4">Inbox</h2>
 
-        {loading && <p>Loading messages...</p>}
+        {loading && <p>Loading messages... <Loader /></p>}
         {error && <p className="text-red-600">{error}</p>}
 
         {!loading && !error && messages.length === 0 && (

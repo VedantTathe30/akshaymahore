@@ -9,6 +9,7 @@ const ContactSection = () => {
   });
 
   const [status, setStatus] = useState(''); // for success/error messages
+  const [loading, setLoading] = useState(false); // loader state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,18 +22,21 @@ const ContactSection = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('');
+    setLoading(true);
     try {
       await axios.post('https://akshaymahore-backend.vercel.app/send-message', formData);
       setStatus('Message sent successfully!');
       setFormData({ Name: '', Email: '', Message: '' });
     } catch (error) {
       setStatus('Failed to send message. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <section id="contact" className="p-8 bg-gradient-to-b from-gray-50 to-white">
-      <h2 className="text-3xl font-bold mb-10 ">Contact Me</h2>
+      <h2 className="text-3xl font-bold mb-10">Contact Me</h2>
       <div className="max-w-2xl bg-white p-8 rounded-xl">
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
@@ -48,6 +52,7 @@ const ContactSection = () => {
               required
               value={formData.Name}
               onChange={handleChange}
+              disabled={loading}
             />
           </div>
           <div>
@@ -63,6 +68,7 @@ const ContactSection = () => {
               required
               value={formData.Email}
               onChange={handleChange}
+              disabled={loading}
             />
           </div>
           <div>
@@ -78,13 +84,15 @@ const ContactSection = () => {
               required
               value={formData.Message}
               onChange={handleChange}
+              disabled={loading}
             ></textarea>
           </div>
           <button
             type="submit"
-            className="w-full bg-orange-400 text-white font-semibold py-3 rounded-lg hover:bg-orange-300 transition duration-300"
+            className="w-full bg-orange-400 text-white font-semibold py-3 rounded-lg hover:bg-orange-300 transition duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
+            disabled={loading}
           >
-            Submit
+            {loading ? 'Sending...' : 'Submit'}
           </button>
           {status && (
             <p className={`mt-4 text-center ${status.includes('successfully') ? 'text-green-600' : 'text-red-600'}`}>

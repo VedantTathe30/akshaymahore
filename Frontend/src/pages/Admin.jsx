@@ -15,7 +15,7 @@ const Admin = () => {
           </Link>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2 font-bold">
           <Link to="/search" className="box bg-green-500 hover:bg-green-600 rounded shadow text-white flex justify-center items-center h-40">
             SEARCH SECTION
           </Link>
@@ -25,8 +25,11 @@ const Admin = () => {
           <Link to="/read-messages" className="box bg-red-500 hover:bg-red-600 rounded shadow text-white flex justify-center items-center h-40">
             READ MESSAGES
           </Link>
-          <Link to="/change-data" className="box bg-gray-600 hover:bg-gray-700 rounded shadow text-white flex justify-center items-center h-40">
-            CHANGE DATA
+          <Link to="/update-notice" className="box bg-gray-600 hover:bg-gray-700 rounded shadow text-white flex justify-center items-center h-40">
+            UPDATE NOTICE/CLINIC STATUS
+          </Link>
+          <Link to="/change-data" className="box bg-purple-600 hover:bg-purple-700 rounded shadow text-white flex justify-center items-center h-40">
+            CHANGE WEBSITE DATA
           </Link>
           <Link to="/send-sms" className="box bg-indigo-500 hover:bg-indigo-600 rounded shadow text-white flex justify-center items-center h-40">
             SEND SMS TO PATIENTS

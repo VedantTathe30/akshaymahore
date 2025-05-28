@@ -13,7 +13,7 @@ const AdminSidebar = () => {
   return (
     <>
       {/* Desktop AdminSidebar */}
-      <aside className="hidden lg:flex flex-col w-75 h-full bg-gradient-to-b p-6 shadow-xl">
+      <aside className="hidden lg:flex flex-col w-75 h-screen bg-gradient-to-b p-6 shadow-xl">
         <div className="flex flex-col items-center">
           <img
             src={profileimg}
@@ -29,7 +29,7 @@ const AdminSidebar = () => {
           </a>
           <a
             href="/logout"
-            className="mt-2 px-4 py-2 bg-red-600 text-white font-semibold rounded hover:bg-red-500"
+            className="mt-2 px-8 py-2 bg-red-600 text-white font-semibold rounded hover:bg-red-500"
           >
             Logout
           </a>
@@ -59,7 +59,7 @@ const AdminSidebar = () => {
 
       {/* Mobile AdminSidebar */}
       <div
-        className={`fixed top-0 left-0 w-64 h-full bg-gradient-to-b bg-white p-6 shadow-xl transform transition-transform duration-300 z-40 ${
+        className={`fixed top-0 left-0 w-64 h-screen bg-gradient-to-b bg-white p-6 shadow-xl transform transition-transform duration-300 z-40 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

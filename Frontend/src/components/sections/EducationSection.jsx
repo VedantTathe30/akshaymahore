@@ -1,26 +1,65 @@
-// components/sections/EducationSection.jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+const fallbackEducation = [
+  {
+    degree: "MD in Homeopathy",
+    years: "2012–2014",
+    institution: "Dakshin Kesri Muni Mishrilalji Homoeopathic Medical College, Aurangabad",
+    desc: ""
+  },
+  {
+    degree: "BHMS",
+    years: "",
+    institution: "Panchsheel Homoeopathic Medical College, Khamgaon",
+    desc: ""
+  },
+  {
+    degree: "Higher Secondary",
+    years: "",
+    institution: "R. K. High School and Junior College, Pulgaon",
+    desc: ""
+  },
+  {
+    degree: "Primary Education",
+    years: "",
+    institution: "Pulgaon Cotton Mills Prathamik School, Pulgaon",
+    desc: ""
+  }
+];
 
 const EducationSection = () => {
-  const education = [
-    {
-      degree: "MD in Homeopathy",
-      years: "2012–2014",
-      institution: "Dakshin Kesri Muni Mishrilalji Homoeopathic Medical College, Aurangabad"
-    },
-    {
-      degree: "BHMS",
-      institution: "Panchsheel Homoeopathic Medical College, Khamgaon"
-    },
-    {
-      degree: "Higher Secondary",
-      institution: "R. K. High School and Junior College, Pulgaon"
-    },
-    {
-      degree: "Primary Education",
-      institution: "Pulgaon Cotton Mills Prathamik School, Pulgaon"
-    }
-  ];
+  const [education, setEducation] = useState(fallbackEducation);
+
+  useEffect(() => {
+    const fetchEducationData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/clinic-status');
+        const data = await response.json();
+
+        // Check if data arrays exist and have items
+        if (
+          data.edu_data_degree?.length &&
+          data.edu_data_name?.length &&
+          data.edu_data_desc?.length &&
+          data.edu_data_year?.length
+        ) {
+          // Construct education array dynamically
+          const dynamicEducation = data.edu_data_degree.map((degree, i) => ({
+            degree: degree || '',
+            desc: data.edu_data_desc[i] || '',
+            institution: data.edu_data_name[i] || '',
+            years: data.edu_data_year[i] || ''
+          }));
+          setEducation(dynamicEducation);
+        }
+      } catch (error) {
+        console.error('Failed to fetch education data:', error);
+        // fallbackEducation already set
+      }
+    };
+
+    fetchEducationData();
+  }, []);
 
   return (
     <section id="education" className="p-8 bg-gradient-to-b from-white to-gray-100">
@@ -35,6 +74,7 @@ const EducationSection = () => {
               {item.degree} {item.years && <span className="text-sm text-gray-500">({item.years})</span>}
             </h3>
             <p className="mt-2 text-gray-600">{item.institution}</p>
+            {item.desc && <p className="mt-2 text-gray-500 italic text-sm">{item.desc}</p>}
           </div>
         ))}
       </div>

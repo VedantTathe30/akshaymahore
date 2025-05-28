@@ -1,19 +1,26 @@
-// components/Sidebar.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import profileimg from '../assets/images/profile-pic.png';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  useEffect(() => {
+    // Check for JWT token in localStorage on component mount
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+  }, []);
+
+
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex flex-col w-75 h-full bg-gradient-to-b p-6 shadow-xl">
+      <aside className="hidden lg:flex flex-col w-75 bg-gradient-to-b p-6 shadow-xl h-screen">
         <div className="flex flex-col items-center">
           <img
             src={profileimg}
@@ -27,14 +34,16 @@ const Sidebar = () => {
           >
             Admin Page
           </a>
-          <a
-            href="/logout"
-            className="mt-2 px-4 py-2 bg-red-600 text-white font-semibold rounded hover:bg-red-500"
-          >
-            Logout
-          </a>
+          {isLoggedIn && (
+            <a
+              href='/logout'
+              className="mt-2 px-8 py-2 bg-red-600 text-white font-semibold rounded hover:bg-red-500"
+            >
+              Logout
+            </a>
+          )}
         </div>
-        <nav className="mt-10 space-y-4 font-medium text-center text-lg">
+        <nav className="mt-4 space-y-4 font-medium text-center text-lg">
           <a href="/" className="block hover:text-orange-300">Home</a>
           <a href="#hero" className="block hover:text-orange-300">Introduction</a>
           <a href="#about" className="block hover:text-orange-300">About</a>
@@ -43,8 +52,10 @@ const Sidebar = () => {
           <a href="#contact" className="block hover:text-orange-300">Contact Me</a>
         </nav>
         <footer className="mt-auto text-center text-lg text-gray-900 ">
-          © Developed by{' '} 
-          <a href="https://vedanttathe.netlify.app" className="text-orange-500 text-lg">Vedant Tathe</a>
+          © Developed by{' '}
+          <a href="https://vedanttathe.netlify.app" className="text-orange-500 text-lg">
+            Vedant Tathe
+          </a>
         </footer>
       </aside>
 
@@ -60,7 +71,7 @@ const Sidebar = () => {
 
       {/* Mobile Sidebar */}
       <div
-        className={`fixed top-0 left-0 w-64 h-full bg-gradient-to-b bg-white p-6 shadow-xl transform transition-transform duration-300 z-40 ${
+        className={`fixed top-0 left-0 w-64 h-screen bg-gradient-to-b bg-white p-6 shadow-xl transform transition-transform duration-300 z-40 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -77,24 +88,39 @@ const Sidebar = () => {
           >
             Admin Page
           </a>
-          <a
-            href="/logout"
-            className="mt-2 px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded hover:bg-red-500"
-          >
-            Logout
-          </a>
+          {isLoggedIn && (
+            <a href="/logout"              
+              className="mt-2 px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded hover:bg-red-500"
+            >
+              Logout
+            </a>
+          )}
         </div>
-        <nav className="mt-8 space-y-3 font-medium text-center text-lg">
-          <a href="/" onClick={toggleMenu} className="block hover:text-orange-300">Home</a>
-          <a href="#hero" onClick={toggleMenu} className="block hover:text-orange-300">Introduction</a>
-          <a href="#about" onClick={toggleMenu} className="block hover:text-orange-300">About</a>
-          <a href="#education" onClick={toggleMenu} className="block hover:text-orange-300">Education</a>
-          <a href="#location" onClick={toggleMenu} className="block hover:text-orange-300">Location</a>
-          <a href="#contact" onClick={toggleMenu} className="block hover:text-orange-300">Contact Me</a>
+        <nav className="mt-4 space-y-3 font-medium text-center text-lg">
+          <a href="/" onClick={toggleMenu} className="block hover:text-orange-300">
+            Home
+          </a>
+          <a href="#hero" onClick={toggleMenu} className="block hover:text-orange-300">
+            Introduction
+          </a>
+          <a href="#about" onClick={toggleMenu} className="block hover:text-orange-300">
+            About
+          </a>
+          <a href="#education" onClick={toggleMenu} className="block hover:text-orange-300">
+            Education
+          </a>
+          <a href="#location" onClick={toggleMenu} className="block hover:text-orange-300">
+            Location
+          </a>
+          <a href="#contact" onClick={toggleMenu} className="block hover:text-orange-300">
+            Contact Me
+          </a>
         </nav>
-        <footer className="mt-10 text-center text-gray-300 text-lg">
+        <footer className="mt-10 text-center text-gray-800 text-lg">
           © Developed by{' '}
-          <a href="https://vedanttathe.netlify.app" className="text-orange-500">Vedant Tathe</a>
+          <a href="https://vedanttathe.netlify.app" className="text-orange-500">
+            Vedant Tathe
+          </a>
         </footer>
       </div>
     </>

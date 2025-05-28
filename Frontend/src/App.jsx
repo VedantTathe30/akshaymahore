@@ -14,6 +14,8 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './components/Home';
 import Logout from './pages/Logout';
+import UpdateNoticeOrStatus from './pages/UpdateNoticeOrStatus';
+// import { Toaster } from 'react-hot-toast';
 
 const PrivateRoute = ({ element }) => {
   const { isAuthenticated } = useAuth();
@@ -22,12 +24,16 @@ const PrivateRoute = ({ element }) => {
 
 const App = () => {
   return (
+    
     <AuthProvider>
       <Routes>
+        
+      {/* <Toaster position="top-right" reverseOrder={false} /> */}
         <Route path="/" element={<Home />} />
         <Route path="/admin" element={<PrivateRoute element={<Admin />} />} />
         <Route path="/search" element={<PrivateRoute element={<Search />} />} />
         <Route path="/add-patient" element={<PrivateRoute element={<AddPatient />} />} />
+        <Route path="/update-notice" element={<PrivateRoute element={<UpdateNoticeOrStatus />} />} />
         <Route path="/change-data" element={<PrivateRoute element={<ChangeData />} />} />
         <Route path="/read-messages" element={<PrivateRoute element={<ReadMessages />} />} />
         <Route path="/send-sms" element={<PrivateRoute element={<SendSMS />} />} />

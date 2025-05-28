@@ -2,10 +2,12 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import Loader from '../components/Loader';
 
 const Logout = () => {
   const { logout } = useAuth();  // <- correctly calling logout from context
   const navigate = useNavigate();
+  localStorage.removeItem('token');
 useEffect(() => {
   const doLogout = async () => {
     try {
@@ -23,7 +25,7 @@ useEffect(() => {
 }, [logout, navigate]);
 
 
-  return <p>Logging out... Please wait a minute</p>;
+  return <p className='h-screen'><Loader /></p>;
 };
 
 export default Logout;

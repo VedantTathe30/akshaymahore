@@ -3,18 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import Sidebar from '../components/Sidebar';
+import Loader from '../components/Loader';
 
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
+  const [isLoading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     setError('');
     try {
@@ -26,16 +29,22 @@ const Login = () => {
       if (response.status === 200) {
         login();           // update auth context
         navigate('/admin'); // redirect after login success
+        setLoading(false);
+        localStorage.setItem('token',true);
       }
       else {
 
         setError(response.data.message);
+        setLoading(false);
       }
     } catch (err) {
       console.log("Error:- ", err);
       setError(err.response.data.message || 'Login failed');
+      setLoading(false);
     }
   };
+
+
 
   return (
     <>
@@ -72,10 +81,20 @@ const Login = () => {
                 {error && <p className="text-red-600">{error}</p>}
                 <button
                   type="submit"
-                  className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-500"
+                  disabled={isLoading}
+                  className={`w-full py-2 rounded text-white transition ${isLoading ? 'bg-indigo-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-500'
+                    }`}
                 >
-                  Login
+                  {isLoading ? (
+                    <div className="flex justify-center items-center">
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                      Logging in...
+                    </div>
+                  ) : (
+                    'Login'
+                  )}
                 </button>
+
               </form>
             </div>
           </div>
