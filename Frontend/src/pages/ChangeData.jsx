@@ -70,7 +70,7 @@ const ChangeData = () => {
 
   // Fetch data on mount
   useEffect(() => {
-    axios.get(`http://localhost:3000/clinic-status`)
+    axios.get(`https://akshaymahore.vercel.app/clinic-status`)
       .then(res => {
         const data = res.data;
         if (data) {
@@ -119,7 +119,7 @@ const ChangeData = () => {
     };
 
     try {
-      await axios.post('http://localhost:3000/change-edu-data', payload);
+      await axios.post('https://akshaymahore.vercel.app/change-edu-data', payload);
       alert('Education entry updated successfully.');
     } catch (err) {
       console.error('Error updating education:', err);
@@ -132,7 +132,7 @@ const ChangeData = () => {
   const handleEduReset = async () => {
     setLoadingEduReset(true);
     try {
-      await axios.post('http://localhost:3000/reset-edu-data', { index: selectedEduIndex });
+      await axios.post('https://akshaymahore.vercel.app/reset-edu-data', { index: selectedEduIndex });
 
       const updatedNames = [...eduNames];
       const updatedDegrees = [...eduDegrees];
@@ -161,7 +161,7 @@ const ChangeData = () => {
   // Hero heading section
   const handleHeroSubmit = () => {
     setLoadingHeroSubmit(true);
-    fetch('http://localhost:3000/change-hero-heading', {
+    fetch('https://akshaymahore.vercel.app/change-hero-heading', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ heroHeading }),
@@ -180,7 +180,7 @@ const ChangeData = () => {
 
   const handleHeroReset = () => {
     setLoadingHeroReset(true);
-    fetch('http://localhost:3000/reset-hero-heading', {
+    fetch('https://akshaymahore.vercel.app/reset-hero-heading', {
       method: 'POST',
     })
       .then((res) => res.json())
@@ -200,7 +200,7 @@ const ChangeData = () => {
   // Clinic timings section
   const handleClinicTimingsSubmit = () => {
     setLoadingClinicSubmit(true);
-    fetch('http://localhost:3000/change-clinic-timings', {
+    fetch('https://akshaymahore.vercel.app/change-clinic-timings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ clinicTimings }),
@@ -219,7 +219,7 @@ const ChangeData = () => {
 
   const handleClinicTimingsReset = () => {
     setLoadingClinicReset(true);
-    fetch('http://localhost:3000/reset-clinic-timings', {
+    fetch('https://akshaymahore.vercel.app/reset-clinic-timings', {
       method: 'POST',
     })
       .then((res) => res.json())
@@ -238,7 +238,7 @@ const ChangeData = () => {
   // About data section
   const handleAboutDataSubmit = () => {
     setLoadingAboutSubmit(true);
-    fetch('http://localhost:3000/change-about-data', {
+    fetch('https://akshaymahore.vercel.app/change-about-data', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ aboutData }),
@@ -257,7 +257,7 @@ const ChangeData = () => {
 
   const handleAboutDataReset = () => {
     setLoadingAboutReset(true);
-    fetch('http://localhost:3000/reset-about-data', {
+    fetch('https://akshaymahore.vercel.app/reset-about-data', {
       method: 'POST',
     })
       .then((res) => res.json())
@@ -277,7 +277,7 @@ const ChangeData = () => {
   // Contact data section
   const handleContactSubmit = () => {
     setLoadingContactSubmit(true);
-    fetch('http://localhost:3000/change-contact-data', {
+    fetch('https://akshaymahore.vercel.app/change-contact-data', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contactEmail, contactMobile }),
@@ -296,7 +296,7 @@ const ChangeData = () => {
 
   const handleContactReset = () => {
     setLoadingContactReset(true);
-    fetch('http://localhost:3000/reset-contact-data', {
+    fetch('https://akshaymahore.vercel.app/reset-contact-data', {
       method: 'POST',
     })
       .then((res) => res.json())

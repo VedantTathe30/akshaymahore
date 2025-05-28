@@ -11,7 +11,7 @@ const AboutSection = () => {
   useEffect(() => {
     const fetchAboutData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/clinic-status');
+        const response = await fetch('https://akshaymahore.vercel.app/clinic-status');
         const data = await response.json();
 
         // Validate if data has needed fields

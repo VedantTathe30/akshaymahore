@@ -31,9 +31,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use('/',adminRoutes);
 
-app.listen(3000,(req,res)=>{
-    console.log("Server is Running");
-})
+// app.listen(3000,(req,res)=>{
+//     console.log("Server is Running");
+// })
 
 
 module.exports = app;
