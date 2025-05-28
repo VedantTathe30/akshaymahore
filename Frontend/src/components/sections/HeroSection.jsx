@@ -19,7 +19,7 @@ const HeroSection = () => {
   useEffect(() => {
     const checkClinicStatus = async () => {
       try {
-        const response = await fetch('https://akshaymahore.vercel.app/clinic-status');
+        const response = await fetch('https://akshaymahore-backend.vercel.app/clinic-status');
 
         const text = await response.text();
 

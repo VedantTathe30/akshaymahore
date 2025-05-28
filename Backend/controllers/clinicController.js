@@ -6,6 +6,12 @@ const User = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 module.exports = {
 
+  
+  welcome: async (req, res) => {
+    console.log("hi");
+    res.send("welcome");
+  },
+
   //auth
   login: async (req, res) => {
     console.log("hi");

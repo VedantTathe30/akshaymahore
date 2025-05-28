@@ -3,6 +3,7 @@ const router = express.Router();
 const controller = require('../controllers/clinicController');
 
 
+router.get('/', controller.welcome);
 //auth
 router.post('/login', controller.login);
 router.post('/logout', controller.logout);
