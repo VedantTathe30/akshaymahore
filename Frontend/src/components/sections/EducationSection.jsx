@@ -35,15 +35,14 @@ const EducationSection = () => {
       try {
         const response = await fetch('https://akshaymahore.vercel.app/clinic-status');
         const data = await response.json();
+        console.log(data);
 
-        // Check if data arrays exist and have items
         if (
           data.edu_data_degree?.length &&
           data.edu_data_name?.length &&
           data.edu_data_desc?.length &&
           data.edu_data_year?.length
         ) {
-          // Construct education array dynamically
           const dynamicEducation = data.edu_data_degree.map((degree, i) => ({
             degree: degree || '',
             desc: data.edu_data_desc[i] || '',
@@ -74,7 +73,12 @@ const EducationSection = () => {
               {item.degree} {item.years && <span className="text-sm text-gray-500">({item.years})</span>}
             </h3>
             <p className="mt-2 text-gray-600">{item.institution}</p>
-            {item.desc && <p className="mt-2 text-gray-500 italic text-sm">{item.desc}</p>}
+            {item.desc && (
+              <p
+                className="mt-2 text-gray-500 italic text-sm"
+                dangerouslySetInnerHTML={{ __html: item.desc }}
+              />
+            )}
           </div>
         ))}
       </div>
