@@ -77,7 +77,7 @@ const HeroSection = () => {
   return (
     <section
       id="hero"
-      className="h-screen bg-cover bg-no-repeat bg-right md:bg-center flex flex-col items-start ps-8 pt-20"
+      className="h-screen bg-cover bg-no-repeat bg-right md:bg-center flex flex-col items-start ps-8 pt-25"
       style={{
         backgroundImage: `linear-gradient(rgba(154,154,154,0.6), rgba(154,154,154,0.6)), url(${landscape_img})`,
       }}
