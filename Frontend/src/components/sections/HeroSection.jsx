@@ -77,12 +77,14 @@ const HeroSection = () => {
   return (
     <section
       id="hero"
-      className="h-screen bg-cover bg-no-repeat bg-right md:bg-center flex flex-col items-start ps-8 pt-25"
+      className="h-screen bg-cover bg-no-repeat bg-right lg:bg-center flex flex-col items-start ps-8 "
       style={{
         backgroundImage: `linear-gradient(rgba(154,154,154,0.6), rgba(154,154,154,0.6)), url(${landscape_img})`,
       }}
     >
-      <h2 className="text-4xl font-bold leading-tight">
+      <div className='h-full flex flex-col justify-content-center mt-33' style={{height: '100vh'}}>
+        
+      <h2 className="text-4xl font-bold leading-tight w-75 md:w-100">
         Welcome To <br /> Mahore Homeo Clinic
       </h2>
 
@@ -92,11 +94,12 @@ const HeroSection = () => {
           Morning: 10 AM – 1 PM |<br /> Evening: 6:30 PM – 9:30 PM
         </p>
 
-        <p className="mt-4">
+        <p className="mt-8">
           <span className="bg-gray-800 text-white rounded px-2 py-2">
             Currently: <span>{clinicStatus || 'Loading...'}</span>
           </span>
         </p>
+      </div>
       </div>
     </section>
   );
