@@ -60,18 +60,78 @@ module.exports = {
 
   
   //search
-  searchData: async (req, res) => {
-    const q = req.query.q || '';
+  // searchData: async (req, res) => {
+  //   const q = req.query.q || '';
+  //   const regex = new RegExp(q, 'i');
+  //   const results = await User.find({
+  //     $or: [
+  //       { Name: { $regex: regex } },
+  //       { MobileNo: { $regex: regex } },
+  //       { RegNo: { $regex: regex } },
+  //     ]
+  //   }, 'Name MobileNo RegNo');
+  //   res.status(200).json(results);
+  // },
+
+
+  // Search patients
+
+  // controllers/clinicController.js
+
+// 🔍 Search patients (return _id)
+searchData: async (req, res) => {
+  try {
+    const q = (req.query.q || '').trim();
     const regex = new RegExp(q, 'i');
-    const results = await Clinic.find({
-      $or: [
-        { Name: { $regex: regex } },
-        { MobileNo: { $regex: regex } },
-        { RegNo: { $regex: regex } },
-      ]
-    }, 'Name MobileNo RegNo');
+
+    const results = await User.find(
+      {
+        $or: [
+          { Name: { $regex: regex } },
+          { MobileNo: { $regex: regex } },
+          { RegNo: { $regex: regex } },
+        ],
+      },
+      '_id Name MobileNo RegNo'
+    );
+
     res.status(200).json(results);
-  },
+  } catch (err) {
+    console.error('Search error:', err);
+    res.status(500).json({ error: 'Server error during search' });
+  }
+},
+
+// ✏️ Update patient by _id
+updatePatient: async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { Name, MobileNo, RegNo } = req.body;
+    await User.findByIdAndUpdate(id, { Name, MobileNo, RegNo });
+    res.status(200).json({ message: 'Patient updated successfully!' });
+  } catch (err) {
+    console.error('Update error:', err);
+    res.status(500).json({ error: 'Failed to update patient.' });
+  }
+},
+
+// ❌ Delete patient by _id
+delPatient: async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await User.findByIdAndDelete(id);
+    if (result) {
+      res.json({ message: 'Patient Deleted Successfully..!' });
+    } else {
+      res.status(404).json({ err: 'No patient found with the given ID.' });
+    }
+  } catch (error) {
+    console.error('Delete failed:', error);
+    res.status(500).json({ err: 'Internal Server Error' });
+  }
+},
+
+
 
   //clinic
   getClinicStatus: async (req, res) => {
@@ -151,15 +211,6 @@ module.exports = {
     res.status(201).json({ message: 'Patient Added Successfully..!' });
   },
 
-  delPatient: async (req, res) => {
-    const regno = req.params.regno;
-    const result = await User.deleteMany({ RegNo: regno });
-    if (result.deletedCount > 0) {
-      res.json({ message: 'Patient Deleted Successfully..!' });
-    } else {
-      res.status(404).json({ err: 'No patient found with the given RegNo.' });
-    }
-  },
 
   getAllData: async (req, res) => {
     const data = await User.find({});

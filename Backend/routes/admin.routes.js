@@ -19,7 +19,10 @@ router.post('/update-notice', controller.updateNotice);
 router.post('/reset-notice', controller.resetNotice);
 //users
 router.post('/add-patient', controller.addPatient);
-router.delete('/delete-patient/:regno', controller.delPatient);
+// update and delete by ID
+router.put('/update-patient/:id', controller.updatePatient);
+router.delete('/delete-patient/:id', controller.delPatient);
+
 router.get('/all-data', controller.getAllData);
 //hero
 router.post('/change-hero-heading', controller.changeHeroHeading);
@@ -39,5 +42,6 @@ router.post('/reset-edu-data', controller.resetEduData);
 router.post('/send-message', controller.sendMessage);
 router.get('/read-messages', controller.readMessages);
 router.delete('/delete-message', controller.delMsg);
+
 
 module.exports = router;
