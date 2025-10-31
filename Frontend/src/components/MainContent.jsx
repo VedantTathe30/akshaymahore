@@ -6,6 +6,8 @@ import EducationSection from './sections/EducationSection';
 import LocationSection from './sections/LocationSection';
 import ContactSection from './sections/ContactSection';
 import NoticeSection from './sections/NoticeSection';
+import PatientGallerySection from './sections/PatientGallerySection';
+import ClinicGallerySection from './sections/ClinicGallerySection';
 import Footer from './sections/Footer';
 
 const MainContent = () => {
@@ -15,6 +17,8 @@ const MainContent = () => {
       <HeroSection />
       <AboutSection />
       <EducationSection />
+      <PatientGallerySection />
+      <ClinicGallerySection />
       <LocationSection />
       <ContactSection />
       <Footer />

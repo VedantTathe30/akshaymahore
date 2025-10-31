@@ -18,7 +18,7 @@ const AddPatient = () => {
     setMessage('');
 
     try {
-      const res = await axios.post('https://akshaymahore-backend.vercel.app/add-patient', form);
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/add-patient`, form);
       setMessage(res.data.message);
       setForm({ Name: '', MobileNo: '', RegNo: '' });
     } catch (error) {

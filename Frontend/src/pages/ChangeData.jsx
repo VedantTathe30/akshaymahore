@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import AdminSidebar from '../components/AdminSidebar';
 import Footer from '../components/sections/Footer';
 import axios from 'axios';
+import { API_URL } from '../config/api';
 
 const ChangeContentSection = ({ title, description, value, onChange, onSubmit, onReset, loadingSubmit, loadingReset }) => (
   <div className="my-8">
@@ -70,7 +71,7 @@ const ChangeData = () => {
 
   // Fetch data on mount
   useEffect(() => {
-    axios.get(`https://akshaymahore-backend.vercel.app/clinic-status`)
+    axios.get(`${import.meta.env.VITE_API_URL}/clinic-status`)
       .then(res => {
         const data = res.data;
         if (data) {
@@ -119,7 +120,7 @@ const ChangeData = () => {
     };
 
     try {
-      await axios.post('https://akshaymahore-backend.vercel.app/change-edu-data', payload);
+      await axios.post(`${API_URL}/change-edu-data`, payload);
       alert('Education entry updated successfully.');
     } catch (err) {
       console.error('Error updating education:', err);
@@ -132,7 +133,7 @@ const ChangeData = () => {
   const handleEduReset = async () => {
     setLoadingEduReset(true);
     try {
-      await axios.post('https://akshaymahore-backend.vercel.app/reset-edu-data', { index: selectedEduIndex });
+      await axios.post(`${import.meta.env.VITE_API_URL}/reset-edu-data`, { index: selectedEduIndex });
 
       const updatedNames = [...eduNames];
       const updatedDegrees = [...eduDegrees];
@@ -161,7 +162,7 @@ const ChangeData = () => {
   // Hero heading section
   const handleHeroSubmit = () => {
     setLoadingHeroSubmit(true);
-    fetch('https://akshaymahore-backend.vercel.app/change-hero-heading', {
+    fetch(`${API_URL}/change-hero-heading`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ heroHeading }),
@@ -180,7 +181,7 @@ const ChangeData = () => {
 
   const handleHeroReset = () => {
     setLoadingHeroReset(true);
-    fetch('https://akshaymahore-backend.vercel.app/reset-hero-heading', {
+    fetch(`${import.meta.env.VITE_API_URL}/reset-hero-heading`, {
       method: 'POST',
     })
       .then((res) => res.json())
@@ -200,7 +201,7 @@ const ChangeData = () => {
   // Clinic timings section
   const handleClinicTimingsSubmit = () => {
     setLoadingClinicSubmit(true);
-    fetch('https://akshaymahore-backend.vercel.app/change-clinic-timings', {
+    fetch(`${import.meta.env.VITE_API_URL}/change-clinic-timings`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ clinicTimings }),
@@ -219,7 +220,7 @@ const ChangeData = () => {
 
   const handleClinicTimingsReset = () => {
     setLoadingClinicReset(true);
-    fetch('https://akshaymahore-backend.vercel.app/reset-clinic-timings', {
+    fetch(`${import.meta.env.VITE_API_URL}/reset-clinic-timings`, {
       method: 'POST',
     })
       .then((res) => res.json())
@@ -238,7 +239,7 @@ const ChangeData = () => {
   // About data section
   const handleAboutDataSubmit = () => {
     setLoadingAboutSubmit(true);
-    fetch('https://akshaymahore-backend.vercel.app/change-about-data', {
+    fetch(`${import.meta.env.VITE_API_URL}/change-about-data`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ aboutData }),
@@ -257,7 +258,7 @@ const ChangeData = () => {
 
   const handleAboutDataReset = () => {
     setLoadingAboutReset(true);
-    fetch('https://akshaymahore-backend.vercel.app/reset-about-data', {
+    fetch(`${import.meta.env.VITE_API_URL}/reset-about-data`, {
       method: 'POST',
     })
       .then((res) => res.json())
@@ -277,7 +278,7 @@ const ChangeData = () => {
   // Contact data section
   const handleContactSubmit = () => {
     setLoadingContactSubmit(true);
-    fetch('https://akshaymahore-backend.vercel.app/change-contact-data', {
+    fetch(`${import.meta.env.VITE_API_URL}/change-contact-data`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contactEmail, contactMobile }),
@@ -296,7 +297,7 @@ const ChangeData = () => {
 
   const handleContactReset = () => {
     setLoadingContactReset(true);
-    fetch('https://akshaymahore-backend.vercel.app/reset-contact-data', {
+    fetch(`${import.meta.env.VITE_API_URL}/reset-contact-data`, {
       method: 'POST',
     })
       .then((res) => res.json())

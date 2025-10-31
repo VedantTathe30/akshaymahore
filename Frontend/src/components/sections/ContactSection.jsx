@@ -24,7 +24,7 @@ const ContactSection = () => {
     setStatus('');
     setLoading(true);
     try {
-      await axios.post('https://akshaymahore-backend.vercel.app/send-message', formData);
+      await axios.post(`${import.meta.env.VITE_API_URL}/send-message`, formData);
       setStatus('Message sent successfully!');
       setFormData({ Name: '', Email: '', Message: '' });
     } catch (error) {

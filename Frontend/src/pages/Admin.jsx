@@ -31,6 +31,9 @@ const Admin = () => {
           <Link to="/change-data" className="box bg-purple-600 hover:bg-purple-700 rounded shadow text-white flex justify-center items-center h-40">
             CHANGE WEBSITE DATA
           </Link>
+          <Link to="/clinic-gallery" className="box bg-yellow-500 hover:bg-yellow-600 rounded shadow text-white flex justify-center items-center h-40">
+       MANAGE CLINIC GALLERY
+          </Link>
           <Link to="/send-sms" className="box bg-indigo-500 hover:bg-indigo-600 rounded shadow text-white flex justify-center items-center h-40">
             SEND SMS TO PATIENTS
           </Link>

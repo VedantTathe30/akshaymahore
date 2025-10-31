@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AdminSidebar from '../components/AdminSidebar';
+import { API_URL } from '../config/api';
 import { Link } from 'react-router-dom';
 import Loader from '../components/Loader';
 
@@ -11,7 +12,7 @@ const ReadMessages = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    axios.get('https://akshaymahore-backend.vercel.app/read-messages')
+    axios.get(`${API_URL}/read-messages`)
       .then(res => {
         setMessages(res.data); // assume array of { name, email, message, date }
         setLoading(false);

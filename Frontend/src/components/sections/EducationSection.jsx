@@ -33,7 +33,7 @@ const EducationSection = () => {
   useEffect(() => {
     const fetchEducationData = async () => {
       try {
-        const response = await fetch('https://akshaymahore-backend.vercel.app/clinic-status');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/clinic-status`);
         const data = await response.json();
         console.log(data);
 
@@ -70,7 +70,7 @@ const EducationSection = () => {
             className="bg-white shadow-lg rounded-lg p-6 border-l-4 border-orange-500 hover:shadow-xl transition duration-300"
           >
             <h3 className="text-lg font-semibold">
-              {item.degree} {item.years && <span className="text-sm text-gray-500">({item.years})</span>}
+              {item.degree} {item.years && <span className="text-sm text-gray-500">{item.years}</span>}
             </h3>
             <p className="mt-2 text-gray-600">{item.institution}</p>
             {item.desc && (

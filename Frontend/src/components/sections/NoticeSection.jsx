@@ -5,7 +5,7 @@ const NoticeSection = () => {
   const [noticeText, setNoticeText] = useState('');
 
   useEffect(() => {
-    axios.get('https://akshaymahore-backend.vercel.app/clinic-status') // Adjust base URL if needed
+    axios.get(`${import.meta.env.VITE_API_URL}/clinic-status`) // Adjust base URL if needed
       .then(response => {
         const notice = response.data.notice || '';
         setNoticeText(notice);

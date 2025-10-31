@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { API_URL } from '../config/api';
 import Loader from '../components/Loader';
 
 const Logout = () => {
@@ -11,7 +12,7 @@ const Logout = () => {
 useEffect(() => {
   const doLogout = async () => {
     try {
-      await axios.post('https://akshaymahore-backend.vercel.app/logout');
+      await axios.post(`${API_URL}/logout`);
       logout(); 
       console.log("About to navigate");
       navigate('/login');

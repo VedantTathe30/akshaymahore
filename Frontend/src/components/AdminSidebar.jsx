@@ -39,6 +39,7 @@ const AdminSidebar = () => {
           <a href="/search" className="block hover:text-orange-300">Search</a>
           <a href="/add-patient" className="block hover:text-orange-300">Add Patients</a>
           <a href="/change-data" className="block hover:text-orange-300">Change WebsiteData</a>
+          <a href="/clinic-gallery" className="block hover:text-orange-300">Clinic Gallery</a>
           <a href="/read-messages" className="block hover:text-orange-300">Inbox</a>
         </nav>
         <footer className="mt-auto text-center text-lg text-gray-900 ">
@@ -88,6 +89,7 @@ const AdminSidebar = () => {
           <a href="/search" onClick={toggleMenu} className="block hover:text-orange-300">Search</a>
           <a href="/add-patient" onClick={toggleMenu} className="block hover:text-orange-300">Add Patients</a>
           <a href="/change-data" onClick={toggleMenu} className="block hover:text-orange-300">Change WebsiteData</a>
+          <a href="/clinic-gallery" onClick={toggleMenu} className="block hover:text-orange-300">Clinic Gallery</a>
           <a href="/read-messages" onClick={toggleMenu} className="block hover:text-orange-300">Inbox</a>
         </nav>
         <footer className="mt-10 text-center text-gray-300 text-lg">

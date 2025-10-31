@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import AdminSidebar from '../components/AdminSidebar';
+import { API_URL } from '../config/api';
 import Footer from '../components/sections/Footer';
 import Loader from '../components/Loader';
 
@@ -16,8 +17,8 @@ const UpdateNoticeOrStatus = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const noticeRes = await axios.get('https://akshaymahore-backend.vercel.app/get-notice');
-        const statusRes = await axios.get('https://akshaymahore-backend.vercel.app/clinic-status');
+        const noticeRes = await axios.get(`${API_URL}/get-notice`);
+        const statusRes = await axios.get(`${API_URL}/clinic-status`);
         setNotice(noticeRes.data.notice);
         setClinicStatus(statusRes.data.clinic_status);
       } catch {
@@ -34,7 +35,7 @@ const UpdateNoticeOrStatus = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await axios.post('https://akshaymahore-backend.vercel.app/update-notice', { notice });
+      const res = await axios.post(`${API_URL}/update-notice`, { notice });
       setStatusMessage(res.data.message);
       setErrorMessage('');
     } catch (err) {
@@ -48,7 +49,7 @@ const UpdateNoticeOrStatus = () => {
   const handleReset = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.post('https://akshaymahore-backend.vercel.app/reset-notice');
+      const res = await axios.post(`${API_URL}/reset-notice`);
       setNotice(res.data.notice);
       setStatusMessage(res.data.message);
       setErrorMessage('');
@@ -63,7 +64,7 @@ const UpdateNoticeOrStatus = () => {
   const changeStatus = async (newStatus) => {
     setIsLoading(true);
     try {
-      const res = await axios.post('https://akshaymahore-backend.vercel.app/change-status', { status: newStatus });
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/change-status`, { status: newStatus });
       setClinicStatus(newStatus);
       setStatusMessage(res.data.message);
       setErrorMessage('');

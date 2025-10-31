@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import AdminSidebar from "../components/AdminSidebar";
+import AdminSidebar from '../components/AdminSidebar';
+import { API_URL } from '../config/api';
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 
@@ -21,7 +22,7 @@ const Search = () => {
 
     setLoading(true);
     try {
-      const res = await axios.get(`https://akshaymahore-backend.vercel.app/search?q=${value}`);
+      const res = await axios.get(`${API_URL}/search?q=${value}`);
       setPatients(res.data);
     } catch (err) {
       console.error("Error searching patients:", err);
@@ -43,7 +44,7 @@ const Search = () => {
   // 💾 Save changes
   const handleSave = async (id) => {
     try {
-      await axios.put(`https://akshaymahore-backend.vercel.app/update-patient/${id}`, editData);
+      await axios.put(`${API_URL}/update-patient/${id}`, editData);
       alert("Patient updated successfully!");
       setEditingId(null);
       handleSearch(query); // 🔁 reload results
@@ -59,7 +60,7 @@ const Search = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`https://akshaymahore-backend.vercel.app/delete-patient/${id}`);
+      await axios.delete(`${API_URL}/delete-patient/${id}`);
       alert("Patient deleted successfully!");
       handleSearch(query); // 🔁 refresh list
     } catch (err) {
