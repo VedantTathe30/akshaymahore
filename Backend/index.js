@@ -13,6 +13,7 @@ const app = express();
 
 connectToDB();
 
+// Default CORS configurations
 const allowedOrigins = [
   'http://localhost:5173',
   'http://www.localhost:5173',  // Vite default dev server
@@ -59,9 +60,12 @@ console.log("✅ Loading gallery routes...");
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
-// app.listen(3000,(req,res)=>{
-//     console.log("Server is Running");
-// })
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || 'localhost';
+
+app.listen(PORT, HOST, () => {
+    console.log(`Server is running on ${HOST}:${PORT}`);
+})
 
 
 module.exports = app;

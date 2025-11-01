@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
     Name: '',
-    Email: '',
+    MobileNo: '',
     Message: '',
   });
 
-  const [status, setStatus] = useState(''); // for success/error messages
   const [loading, setLoading] = useState(false); // loader state
 
   const handleChange = (e) => {
@@ -21,14 +21,32 @@ const ContactSection = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus('');
     setLoading(true);
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/send-message`, formData);
-      setStatus('Message sent successfully!');
-      setFormData({ Name: '', Email: '', Message: '' });
+      toast.success('Message sent successfully!', {
+        duration: 3000,
+        position: 'top-right',
+        style: {
+          background: '#10B981',
+          color: 'white',
+          padding: '16px',
+          borderRadius: '8px',
+        },
+        icon: '✉️',
+      });
+      setFormData({ Name: '', MobileNo: '', Message: '' });
     } catch (error) {
-      setStatus('Failed to send message. Please try again.');
+      toast.error('Failed to send message. Please try again.', {
+        duration: 3000,
+        position: 'top-right',
+        style: {
+          background: '#EF4444',
+          color: 'white',
+          padding: '16px',
+          borderRadius: '8px',
+        },
+      });
     } finally {
       setLoading(false);
     }
@@ -56,17 +74,18 @@ const ContactSection = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">
-              Email
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="mobile">
+              Mobile Number
             </label>
             <input
-              id="email"
-              name="Email"
-              type="email"
+              id="mobile"
+              name="MobileNo"
+              type="tel"
+              pattern="[0-9]{10}"
               className="w-full border border-gray-300 p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
-              placeholder="Your Email"
+              placeholder="Your Mobile Number (10 digits)"
               required
-              value={formData.Email}
+              value={formData.MobileNo}
               onChange={handleChange}
               disabled={loading}
             />
@@ -94,11 +113,7 @@ const ContactSection = () => {
           >
             {loading ? 'Sending...' : 'Submit'}
           </button>
-          {status && (
-            <p className={`mt-4 text-center ${status.includes('successfully') ? 'text-green-600' : 'text-red-600'}`}>
-              {status}
-            </p>
-          )}
+          <Toaster />
         </form>
       </div>
     </section>

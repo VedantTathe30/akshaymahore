@@ -41,7 +41,7 @@ router.post('/reset-edu-data', controller.resetEduData);
 //messages
 router.post('/send-message', controller.sendMessage);
 router.get('/read-messages', controller.readMessages);
-router.delete('/delete-message', controller.delMsg);
+router.delete('/delete-message/:id', controller.delMsg);
 
 
 module.exports = router;

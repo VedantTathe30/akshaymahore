@@ -6,7 +6,7 @@ const messageSchema = mongoose.Schema({
         trim: true,
         uppercase: true
     },
-    Email: {
+    MobileNo: {
         type: String,
         trim: true
     },

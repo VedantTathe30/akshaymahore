@@ -424,22 +424,28 @@ resetEduData: async (req, res) => {
 
   //messages
   sendMessage: async (req, res) => {
-    console.log(MessageModel);
     try {
-      const { Name, Email, Message } = req.body;
+      const { Name, MobileNo, Message, email } = req.body;
 
-      console.log('Request body:', req.body);
-      console.log('Name:', Name, 'Email:', Email, 'Message:', Message);
-
+      // Save to database
       const newMessage = await MessageModel.create({
         Name,
-        Email,
+        MobileNo,
         Message,
+      });
+
+      // Send email notification
+      const { sendEmailNotification } = require('../utils/emailService');
+      await sendEmailNotification({
+        name: Name,
+        email: email || 'Not provided',
+        mobile: MobileNo,
+        message: Message
       });
 
       return res.status(201).json({ message: 'Message Sent Successfully..!' });
     } catch (error) {
-      console.error('Error saving message:', error);
+      console.error('Error processing message:', error);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   },
@@ -450,12 +456,17 @@ resetEduData: async (req, res) => {
   },
 
   delMsg: async (req, res) => {
-    const { message } = req.body;
-    const result = await MessageModel.deleteMany({ message });
-    if (result.deletedCount > 0) {
-      res.json({ message: 'Message Deleted Successfully..!' });
-    } else {
-      res.json({ err: 'No Message found' });
+    const { id } = req.params;
+    try {
+      const result = await MessageModel.findByIdAndDelete(id);
+      if (result) {
+        res.json({ message: 'Message Deleted Successfully!' });
+      } else {
+        res.status(404).json({ error: 'Message not found' });
+      }
+    } catch (error) {
+      console.error('Delete failed:', error);
+      res.status(500).json({ error: 'Failed to delete message' });
     }
   }
 };
