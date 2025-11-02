@@ -40,7 +40,7 @@ const HeroSection = () => {
 
         // Clinic closed on Saturday and Sunday
         if (day === 0 || day === 6) {
-          setClinicStatus('CLOSED');
+          setClinicStatus("CLOSED (Doctor is at Pulgaon's Clinic");
           return;
         }
 
