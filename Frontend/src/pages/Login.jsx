@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../config/axios';
 import { useAuth } from '../context/AuthContext';
 import Sidebar from '../components/Sidebar';
 import Loader from '../components/Loader';
@@ -21,7 +21,7 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, {
+      const response = await axiosInstance.post(`${import.meta.env.VITE_API_URL}/login`, {
         email: form.email,
         password: form.password,
       });
@@ -29,17 +29,14 @@ const Login = () => {
       if (response.status === 200) {
         login();           // update auth context
         navigate('/admin'); // redirect after login success
-        setLoading(false);
         localStorage.setItem('token',true);
-      }
-      else {
-
-        setError(response.data.message);
-        setLoading(false);
+      } else {
+        setError('Invalid credentials');
       }
     } catch (err) {
-      console.log("Error:- ", err);
-      setError(err.response.data.message || 'Login failed');
+      console.error('Login error:', err);
+      setError('Login failed');
+    } finally {
       setLoading(false);
     }
   };

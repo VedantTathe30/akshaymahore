@@ -16,6 +16,9 @@ import Home from './components/Home';
 import Logout from './pages/Logout';
 import UpdateNoticeOrStatus from './pages/UpdateNoticeOrStatus';
 import ManageClinicGallery from './pages/ManageClinicGallery';
+import PatientGallery from './pages/PatientGallery';
+import ManagePatientGallery from './pages/ManagePatientGallery';
+// import PatientGalleryMessages from './pages/PatientGalleryMessages';
 // import { Toaster } from 'react-hot-toast';
 
 const PrivateRoute = ({ element }) => {
@@ -31,12 +34,14 @@ const App = () => {
         
       {/* <Toaster position="top-right" reverseOrder={false} /> */}
         <Route path="/" element={<Home />} />
+        <Route path="/patient-gallery-admin" element={<PatientGallery />} />
         <Route path="/admin" element={<PrivateRoute element={<Admin />} />} />
         <Route path="/search" element={<PrivateRoute element={<Search />} />} />
         <Route path="/add-patient" element={<PrivateRoute element={<AddPatient />} />} />
         <Route path="/update-notice" element={<PrivateRoute element={<UpdateNoticeOrStatus />} />} />
         <Route path="/change-data" element={<PrivateRoute element={<ChangeData />} />} />
         <Route path="/clinic-gallery" element={<PrivateRoute element={<ManageClinicGallery />} />} />
+        {/* <Route path="/patient-gallery-messages" element={<PrivateRoute element={<PatientGalleryMessages />} />} /> */}
         <Route path="/read-messages" element={<PrivateRoute element={<ReadMessages />} />} />
         <Route path="/send-sms" element={<PrivateRoute element={<SendSMS />} />} />
         <Route path="/login" element={<Login />} />

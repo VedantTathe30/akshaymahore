@@ -7,6 +7,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const galleryRoutes = require("./routes/gallery.routes");
+const patientGalleryRoutes = require("./routes/patientGallery.routes");
 
 require('dotenv').config();
 const app = express();
@@ -56,6 +57,12 @@ console.log("✅ Loading gallery routes...");
 
 app.use("/gallery", galleryRoutes);
 console.log("✅ Loading gallery routes...");
+
+app.use("/patient-gallery", patientGalleryRoutes);
+console.log("✅ Loading patient gallery routes...");
+
+// app.use("/patient-gallery-messages", patientGalleryMessageRoutes);
+// console.log("✅ Loading patient gallery message routes...");
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

@@ -38,12 +38,13 @@ const AdminSidebar = () => {
           <a href="/" className="block hover:text-orange-300">Home</a>
           <a href="/search" className="block hover:text-orange-300">Search</a>
           <a href="/add-patient" className="block hover:text-orange-300">Add Patients</a>
+          <a href="/patient-gallery-admin" className="block hover:text-orange-300">Patient Gallery</a>
           <a href="/change-data" className="block hover:text-orange-300">Change WebsiteData</a>
           <a href="/clinic-gallery" className="block hover:text-orange-300">Clinic Gallery</a>
-          <a href="/read-messages" className="block hover:text-orange-300">Inbox</a>
+          <a href="/read-messages" className="block hover:text-orange-300 transition-colors duration-200">Read Messages</a>
         </nav>
         <footer className="mt-auto text-center text-lg text-gray-900 ">
-          © Developed by{' '} 
+          Developed by{' '} 
           <a href="https://vedanttathe.netlify.app" className="text-orange-500 text-lg">Vedant Tathe</a>
         </footer>
       </aside>
@@ -88,6 +89,7 @@ const AdminSidebar = () => {
           <a href="/" onClick={toggleMenu} className="block hover:text-orange-300">Home</a>
           <a href="/search" onClick={toggleMenu} className="block hover:text-orange-300">Search</a>
           <a href="/add-patient" onClick={toggleMenu} className="block hover:text-orange-300">Add Patients</a>
+          <a href="/patient-gallery-admin" onClick={toggleMenu} className="block hover:text-orange-300">Patient Gallery</a>
           <a href="/change-data" onClick={toggleMenu} className="block hover:text-orange-300">Change WebsiteData</a>
           <a href="/clinic-gallery" onClick={toggleMenu} className="block hover:text-orange-300">Clinic Gallery</a>
           <a href="/read-messages" onClick={toggleMenu} className="block hover:text-orange-300">Inbox</a>
