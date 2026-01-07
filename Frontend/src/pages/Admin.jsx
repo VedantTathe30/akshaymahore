@@ -94,15 +94,15 @@ const Admin = () => {
           <Link to="/clinic-gallery" className="box bg-yellow-500 hover:bg-yellow-600 rounded shadow text-white flex justify-center items-center h-40">
             MANAGE CLINIC GALLERY
           </Link>
-          <Link to="/patient-gallery-admin" className="box bg-pink-500 hover:bg-pink-600 rounded shadow text-white flex justify-center items-center h-40">
+          <Link to="/patient-gallery" className="box bg-pink-500 hover:bg-pink-600 rounded shadow text-white flex justify-center items-center h-40">
             MANAGE PATIENT GALLERY
           </Link>
-          <button 
+          {/* <button 
             onClick={() => setShowUploadForm(true)}
             className="box bg-blue-500 hover:bg-blue-600 rounded shadow text-white flex justify-center items-center h-40"
           >
             <FaUpload className="mr-2" /> UPLOAD PATIENT GALLERY
-          </button>
+          </button> */}
           <Link to="/send-sms" className="box bg-indigo-500 hover:bg-indigo-600 rounded shadow text-white flex justify-center items-center h-40">
             SEND SMS TO PATIENTS
           </Link>

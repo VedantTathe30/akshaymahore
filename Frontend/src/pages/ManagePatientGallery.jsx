@@ -1,369 +1,223 @@
-import React, { useState, useEffect } from 'react';
-import axiosInstance from '../config/axios';
-import { FaUpload, FaTrash, FaEdit, FaEye, FaSpinner, FaPlus, FaToggleOn, FaToggleOff } from 'react-icons/fa';
-import toast from 'react-hot-toast';
-import { API_URL } from '../config/api';
-import { useSearchParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import AdminSidebar from "../components/AdminSidebar";
+import { API_URL } from "../config/api";
+import axios from "axios";
 
 const ManagePatientGallery = () => {
-  const [searchParams] = useSearchParams();
-  const [galleryItems, setGalleryItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showUploadForm, setShowUploadForm] = useState(searchParams.get('upload') === 'true');
-  const [editingItem, setEditingItem] = useState(null);
-  const [uploading, setUploading] = useState(false);
+  const [patients, setPatients] = useState([]);
+  const [loading, setLoading] = useState(false);
   
-  // Form state
-  const [formData, setFormData] = useState({
-    patientName: '',
-    beforePhoto: null,
-    afterPhoto: null
-  });
+
+  const [patientName, setPatientName] = useState("");
+  const [beforeImage, setBeforeImage] = useState(null);
+  const [afterImage, setAfterImage] = useState(null);
+  const [caption, setCaption] = useState("");
+
+  const [editingItem, setEditingItem] = useState(null);
+
+  // Fetch patient gallery
+  const fetchPatients = async () => {
+  try {
+    const res = await axios.get(`${API_URL}/patient-gallery`);
+    console.log("PATIENT GALLERY RESPONSE 👉", res.data.data);
+    setPatients(res.data.data);
+  } catch (err) {
+    console.error(err);
+    alert("Failed to fetch patient gallery");
+  }
+  };
+
 
   useEffect(() => {
-    fetchGalleryItems();
+    fetchPatients();
   }, []);
 
-  const fetchGalleryItems = async () => {
+  // Upload patient images
+  const handleUpload = async (e) => {
+    e.preventDefault();
+
+    if (!patientName || !beforeImage || !afterImage) {
+      alert("All fields are required");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("patientName", patientName);
+    formData.append("beforePhoto", beforeImage);
+    formData.append("afterPhoto", afterImage);
+    formData.append("caption", caption);
+
+    setLoading(true);
     try {
-      const response = await axiosInstance.get(`${API_URL}/patient-gallery`);
-      
-      if (response.data.success) {
-        setGalleryItems(response.data.data);
-      }
-    } catch (error) {
-      console.error('Error fetching gallery items:', error);
-      toast.error('Failed to fetch gallery items');
+      await axios.post(`${API_URL}/patient-gallery/upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      alert("Patient gallery added");
+      setPatientName("");
+      setBeforeImage(null);
+      setAfterImage(null);
+      setCaption("");
+      fetchPatients();
+    } catch (err) {
+      console.error(err);
+      alert("Upload failed");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleFileChange = (e) => {
-    const { name, files } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: files[0]
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!formData.patientName || !formData.beforePhoto || !formData.afterPhoto) {
-      toast.error('Please fill patient name and upload both photos');
-      return;
-    }
-
-    const formDataToSend = new FormData();
-    formDataToSend.append('patientName', formData.patientName);
-    formDataToSend.append('beforePhoto', formData.beforePhoto);
-    formDataToSend.append('afterPhoto', formData.afterPhoto);
+  // Delete
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this entry?")) return;
 
     try {
-      setUploading(true);
-      const response = await axiosInstance.post(
-        `${API_URL}/patient-gallery/upload`,
-        formDataToSend,
-        {
-          withCredentials: true
-        }
-      );
-
-      if (response.data.success) {
-        toast.success('Patient gallery uploaded successfully');
-        resetForm();
-        fetchGalleryItems();
-        setShowUploadForm(false);
-      } else {
-        toast.error('Failed to upload gallery');
-      }
-    } catch (error) {
-      console.error('Error uploading gallery:', error);
-      toast.error(error.response?.data?.message || 'Failed to upload gallery');
-    } finally {
-      setUploading(false);
+      await axios.delete(`${API_URL}/patient-gallery/${id}`);
+      fetchPatients();
+    } catch (err) {
+      alert("Delete failed");
     }
   };
 
-  const resetForm = () => {
-    setFormData({
-      patientName: '',
-      beforePhoto: null,
-      afterPhoto: null
-    });
-    setEditingItem(null);
-    
-    // Reset file inputs
-    const fileInputs = document.querySelectorAll('input[type="file"]');
-    fileInputs.forEach(input => {
-      input.value = '';
-    });
-  };
-
-  const toggleActiveStatus = async (id, currentStatus) => {
+  // Update caption
+  const updateCaption = async (id, newCaption) => {
     try {
-      const response = await axiosInstance.patch(
-        `${API_URL}/patient-gallery/${id}/toggle-active`,
-        {}
-      );
-
-      if (response.data.success) {
-        toast.success(`Gallery ${currentStatus ? 'deactivated' : 'activated'} successfully`);
-        fetchGalleryItems();
-      }
-    } catch (error) {
-      console.error('Error toggling status:', error);
-      toast.error('Failed to update status');
+      await axios.put(`${API_URL}/patient-gallery/${id}`, {
+        caption: newCaption,
+      });
+      setEditingItem(null);
+      fetchPatients();
+    } catch (err) {
+      alert("Update failed");
     }
   };
-
-  const deleteGalleryItem = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this gallery item? This action cannot be undone.')) {
-      return;
-    }
-
-    try {
-      const response = await axiosInstance.delete(
-        `${API_URL}/patient-gallery/${id}`
-      );
-
-      if (response.data.success) {
-        toast.success('Gallery item deleted successfully');
-        fetchGalleryItems();
-      }
-    } catch (error) {
-      console.error('Error deleting gallery item:', error);
-      toast.error('Failed to delete gallery item');
-    }
-  };
-
-  const getImageUrl = (photo) => {
-    return `${API_URL}/uploads/patient-gallery/${photo.filename}`;
-  };
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString();
-  };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <FaSpinner className="animate-spin text-4xl text-blue-600" />
-      </div>
-    );
-  }
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Manage Patient Gallery</h1>
-        <button
-          onClick={() => setShowUploadForm(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
+    <div className="flex h-screen bg-gray-100">
+      <AdminSidebar />
+
+      <div className="flex-1 overflow-auto p-8">
+        <h1 className="text-2xl font-bold mb-6">Manage Patient Gallery</h1>
+
+        {/* Upload Form */}
+        <form
+          onSubmit={handleUpload}
+          className="mb-8 p-6 bg-white rounded-lg shadow-md"
         >
-          <FaPlus /> Quick Upload
-        </button>
+          <h2 className="text-xl font-semibold mb-4">
+            Add Patient Transformation
+          </h2>
+
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="Patient Name"
+              value={patientName}
+              onChange={(e) => setPatientName(e.target.value)}
+              className="w-full p-2 border rounded-md"
+            />
+
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setBeforeImage(e.target.files[0])}
+              className="w-full p-2 border rounded-md"
+            />
+
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setAfterImage(e.target.files[0])}
+              className="w-full p-2 border rounded-md"
+            />
+
+            <input
+              type="text"
+              placeholder="Caption (optional)"
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+              className="w-full p-2 border rounded-md"
+            />
+
+            <button
+              disabled={loading}
+              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:bg-blue-300"
+            >
+              {loading ? "Uploading..." : "Upload"}
+            </button>
+          </div>
+        </form>
+
+        {/* Grid */}
+        {/* Grid */}
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {patients.map((item) => (
+    <div
+      key={item._id}
+      className="bg-white p-4 rounded-lg shadow-md relative"
+    >
+      {/* Delete */}
+      <button
+        onClick={() => handleDelete(item._id)}
+        className="absolute top-2 right-2 bg-red-600 text-white p-2 rounded-full"
+      >
+        ✕
+      </button>
+
+      {/* Patient Name */}
+      <h3 className="font-semibold text-lg mb-2">
+        {item.patientName}
+      </h3>
+
+      {/* Images */}
+      <div className="grid grid-cols-2 gap-2 mb-3">
+        {item.beforePhoto?.filename && (
+          <img
+            src={`${API_URL}/uploads/patient-gallery/${item.beforePhoto.filename}`}
+            className="h-40 w-full object-cover rounded"
+            alt="Before"
+          />
+        )}
+
+        {item.afterPhoto?.filename && (
+          <img
+            src={`${API_URL}/uploads/patient-gallery/${item.afterPhoto.filename}`}
+            className="h-40 w-full object-cover rounded"
+            alt="After"
+          />
+        )}
       </div>
 
-      {/* Upload Form Modal */}
-      {showUploadForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Upload Patient Gallery</h2>
-                <button
-                  onClick={() => {
-                    setShowUploadForm(false);
-                    resetForm();
-                  }}
-                  className="text-gray-400 hover:text-gray-600 text-2xl"
-                >
-                  ×
-                </button>
-              </div>
-
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Patient Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="patientName"
-                    value={formData.patientName}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter patient name"
-                    required
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Before Photo *
-                    </label>
-                    <input
-                      type="file"
-                      name="beforePhoto"
-                      key="beforePhoto"
-                      onChange={handleFileChange}
-                      accept="image/*"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      After Photo *
-                    </label>
-                    <input
-                      type="file"
-                      name="afterPhoto"
-                      key="afterPhoto"
-                      onChange={handleFileChange}
-                      accept="image/*"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="flex gap-3 pt-4">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      // Clear file inputs first
-                      const fileInputs = document.querySelectorAll('input[type="file"]');
-                      fileInputs.forEach(input => {
-                        input.value = '';
-                      });
-                      resetForm();
-                    }}
-                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400"
-                  >
-                    Clear Files
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={uploading}
-                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2"
-                  >
-                    {uploading ? <FaSpinner className="animate-spin" /> : <FaUpload />}
-                    {uploading ? 'Uploading...' : 'Upload Gallery'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowUploadForm(false);
-                      resetForm();
-                    }}
-                    className="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
+      {/* Caption */}
+      {editingItem === item._id ? (
+        <input
+          defaultValue={item.caption}
+          autoFocus
+          onBlur={(e) => updateCaption(item._id, e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              updateCaption(item._id, e.target.value);
+            }
+          }}
+          className="w-full p-2 border rounded-md"
+        />
+      ) : (
+        <div className="flex justify-between items-center">
+          <p className="text-gray-700">
+            {item.caption || "—"}
+          </p>
+          <button
+            onClick={() => setEditingItem(item._id)}
+            className="px-3 py-1 bg-blue-500 text-white rounded-md"
+          >
+            Edit
+          </button>
         </div>
       )}
+    </div>
+  ))}
+</div>
 
-      {/* Gallery Items List */}
-      <div className="bg-white rounded-xl shadow overflow-hidden">
-        {galleryItems.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No gallery items found. Upload your first patient gallery!</p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Patient Name
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Photos
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Treatment Date
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {galleryItems.map((item) => (
-                  <tr key={item._id}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{item.patientName}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex space-x-2">
-                        <img
-                          src={getImageUrl(item.beforePhoto)}
-                          alt="Before"
-                          className="h-12 w-12 object-cover rounded"
-                        />
-                        <img
-                          src={getImageUrl(item.afterPhoto)}
-                          alt="After"
-                          className="h-12 w-12 object-cover rounded"
-                        />
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {formatDate(item.treatmentDate)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <button
-                        onClick={() => toggleActiveStatus(item._id, item.isActive)}
-                        className={`flex items-center gap-1 ${item.isActive ? 'text-green-600' : 'text-gray-400'}`}
-                      >
-                        {item.isActive ? <FaToggleOn /> : <FaToggleOff />}
-                        <span className="text-sm">{item.isActive ? 'Active' : 'Inactive'}</span>
-                      </button>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => window.open(getImageUrl(item.beforePhoto), '_blank')}
-                          className="text-blue-600 hover:text-blue-900"
-                          title="View photos"
-                        >
-                          <FaEye />
-                        </button>
-                        <button
-                          onClick={() => deleteGalleryItem(item._id)}
-                          className="text-red-600 hover:text-red-900"
-                          title="Delete"
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
       </div>
     </div>
   );

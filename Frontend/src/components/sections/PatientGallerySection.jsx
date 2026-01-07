@@ -76,14 +76,14 @@ const PatientGallerySection = () => {
           Patient Success Stories
         </h2>
         
-        <div className="text-center mb-8">
+        {/* <div className="text-center mb-8">
           <a 
             href="/patient-gallery" 
             className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
           >
             View Full Patient Gallery
           </a>
-        </div>
+        </div> */}
         
         {galleryItems.length === 0 ? (
           <div className="text-center py-12">

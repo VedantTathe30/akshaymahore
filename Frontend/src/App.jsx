@@ -16,7 +16,6 @@ import Home from './components/Home';
 import Logout from './pages/Logout';
 import UpdateNoticeOrStatus from './pages/UpdateNoticeOrStatus';
 import ManageClinicGallery from './pages/ManageClinicGallery';
-import PatientGallery from './pages/PatientGallery';
 import ManagePatientGallery from './pages/ManagePatientGallery';
 // import PatientGalleryMessages from './pages/PatientGalleryMessages';
 // import { Toaster } from 'react-hot-toast';
@@ -34,7 +33,7 @@ const App = () => {
         
       {/* <Toaster position="top-right" reverseOrder={false} /> */}
         <Route path="/" element={<Home />} />
-        <Route path="/patient-gallery-admin" element={<PatientGallery />} />
+        <Route path="/patient-gallery" element={<ManagePatientGallery />} />
         <Route path="/admin" element={<PrivateRoute element={<Admin />} />} />
         <Route path="/search" element={<PrivateRoute element={<Search />} />} />
         <Route path="/add-patient" element={<PrivateRoute element={<AddPatient />} />} />
