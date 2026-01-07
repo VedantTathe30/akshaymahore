@@ -45,7 +45,7 @@ const Sidebar = () => {
         </div>
         <nav className="mt-4 space-y-4 font-medium text-center text-lg">
           <a href="/" className="block hover:text-orange-300">Home</a>
-          <a href="/patient-gallery" className="block hover:text-orange-300">Patient Gallery</a>
+          {/* <a href="/patient-gallery" className="block hover:text-orange-300">Patient Gallery</a> */}
           <a href="#hero" className="block hover:text-orange-300">Introduction</a>
           <a href="#about" className="block hover:text-orange-300">About</a>
           <a href="#education" className="block hover:text-orange-300">Education</a>
@@ -101,9 +101,9 @@ const Sidebar = () => {
           <a href="/" onClick={toggleMenu} className="block hover:text-orange-300">
             Home
           </a>
-          <a href="/patient-gallery" onClick={toggleMenu} className="block hover:text-orange-300">
+          {/* <a href="/patient-gallery" onClick={toggleMenu} className="block hover:text-orange-300">
             Patient Gallery
-          </a>
+          </a> */}
           <a href="#hero" onClick={toggleMenu} className="block hover:text-orange-300">
             Introduction
           </a>
