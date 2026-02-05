@@ -18,12 +18,32 @@ const PublicRegister = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    // clear field error on change
+    setErrors(prev => ({ ...prev, [name]: undefined }));
+  };
+
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const err = {};
+    if (!form.Name || form.Name.trim().length < 2) err.Name = 'Enter a valid name (min 2 characters)';
+    const mobile = (form.MobileNo || '').replace(/\D/g, '');
+    if (!mobile || mobile.length < 10) err.MobileNo = 'Enter a valid 10-digit mobile number';
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!form.Email || !emailRegex.test(form.Email)) err.Email = 'Enter a valid email address';
+    if (!form.RegNo || form.RegNo.trim().length < 2) err.RegNo = 'Enter a valid registration number';
+    setErrors(err);
+    return Object.keys(err).length === 0;
   };
 
   const submit = async (e) => {
     e.preventDefault();
     setRegistering(true);
     try {
+      if (!validateForm()) {
+        setRegistering(false);
+        return;
+      }
       const payload = { ...form };
       if (emailOtpId && emailOtpCode) {
         payload.otpIdEmail = emailOtpId;
@@ -64,16 +84,19 @@ const PublicRegister = () => {
           <div className="col-span-1">
             <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
             <input name="Name" value={form.Name} onChange={handleChange} required className="w-full border border-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300" />
+            {errors.Name && <p className="text-red-600 text-sm mt-1">{errors.Name}</p>}
           </div>
 
           <div className="col-span-1">
             <label className="block text-sm font-medium text-gray-700 mb-1">Patient Registration No.</label>
             <input name="RegNo" placeholder="TN113" value={form.RegNo} onChange={handleChange} required className="w-full border border-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300" />
+            {errors.RegNo && <p className="text-red-600 text-sm mt-1">{errors.RegNo}</p>}
           </div>
 
           <div className="col-span-1">
             <label className="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
             <input name="MobileNo" value={form.MobileNo} onChange={handleChange} required className="w-full border border-gray-200 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-300" />
+            {errors.MobileNo && <p className="text-red-600 text-sm mt-1">{errors.MobileNo}</p>}
           </div>
 
           <div className="col-span-1">
@@ -100,6 +123,7 @@ const PublicRegister = () => {
                 }
               }} disabled={sendingEmailOtp || !!emailOtpId} className="px-3 bg-orange-600 text-white rounded-md hover:bg-orange-700 disabled:opacity-60 disabled:cursor-not-allowed">{sendingEmailOtp ? 'Sending...' : emailOtpId ? 'Sent' : 'Send OTP'}</button>
             </div>
+            {errors.Email && <p className="text-red-600 text-sm mt-1">{errors.Email}</p>}
 
             {emailOtpId && (
               <div className="mt-3 flex gap-2">
