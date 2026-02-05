@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Admin from './pages/Admin';
 import Search from './pages/Search';
 import AddPatient from './pages/AddPatient';
+import PublicRegister from './pages/PublicRegister';
 import ChangeData from './pages/ChangeData';
 import ReadMessages from './pages/ReadMessages';
 import SendSMS from './pages/SendSMS';
@@ -18,7 +19,7 @@ import UpdateNoticeOrStatus from './pages/UpdateNoticeOrStatus';
 import ManageClinicGallery from './pages/ManageClinicGallery';
 import ManagePatientGallery from './pages/ManagePatientGallery';
 // import PatientGalleryMessages from './pages/PatientGalleryMessages';
-// import { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 const PrivateRoute = ({ element }) => {
   const { isAuthenticated } = useAuth();
@@ -29,11 +30,11 @@ const App = () => {
   return (
     
     <AuthProvider>
+      <Toaster position="top-right" reverseOrder={false} />
       <Routes>
-        
-      {/* <Toaster position="top-right" reverseOrder={false} /> */}
         <Route path="/" element={<Home />} />
         <Route path="/patient-gallery" element={<ManagePatientGallery />} />
+        <Route path="/register" element={<PublicRegister />} />
         <Route path="/admin" element={<PrivateRoute element={<Admin />} />} />
         <Route path="/search" element={<PrivateRoute element={<Search />} />} />
         <Route path="/add-patient" element={<PrivateRoute element={<AddPatient />} />} />

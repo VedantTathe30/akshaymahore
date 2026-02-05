@@ -10,7 +10,7 @@ const Search = () => {
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [editData, setEditData] = useState({ Name: "", MobileNo: "", RegNo: "" });
+  const [editData, setEditData] = useState({ Name: "", MobileNo: "", RegNo: "", Email: "" });
 
   // 🔍 Search patients
   const handleSearch = async (value) => {
@@ -38,6 +38,7 @@ const Search = () => {
       Name: patient.Name,
       MobileNo: patient.MobileNo,
       RegNo: patient.RegNo,
+      Email: patient.Email || '',
     });
   };
 
@@ -84,13 +85,33 @@ const Search = () => {
 
         <h2 className="text-2xl font-bold mb-4">Search Patients</h2>
 
-        <input
-          type="text"
-          placeholder="Enter name, reg no or mobile..."
-          className="border p-3 rounded w-full"
-          value={query}
-          onChange={(e) => handleSearch(e.target.value)}
-        />
+        <div className="flex gap-2">
+          <input
+            type="text"
+            placeholder="Enter name, reg no, mobile or email..."
+            className="border p-3 rounded flex-1"
+            value={query}
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+          <button
+            onClick={async () => {
+              setLoading(true);
+              try {
+                const res = await axios.get(`${API_URL}/all-data`);
+                setPatients(res.data);
+                setQuery('');
+              } catch (err) {
+                console.error('Failed to fetch all patients:', err);
+                alert('Failed to fetch records.');
+              } finally {
+                setLoading(false);
+              }
+            }}
+            className="bg-gray-800 text-white px-4 py-2 rounded"
+          >
+            Show All
+          </button>
+        </div>
 
         <div className="mt-6 space-y-4">
           {loading ? (
@@ -111,6 +132,13 @@ const Search = () => {
                       value={editData.MobileNo}
                       onChange={(e) => setEditData({ ...editData, MobileNo: e.target.value })}
                       className="border p-2 rounded w-full mb-2"
+                    />
+                    <input
+                      type="email"
+                      value={editData.Email}
+                      onChange={(e) => setEditData({ ...editData, Email: e.target.value })}
+                      className="border p-2 rounded w-full mb-2"
+                      placeholder="Email"
                     />
                     <input
                       type="text"
@@ -135,6 +163,7 @@ const Search = () => {
                   <>
                     <p><strong>Name:</strong> {patient.Name}</p>
                     <p><strong>Mobile No:</strong> {patient.MobileNo}</p>
+                    {patient.Email && <p><strong>Email:</strong> {patient.Email}</p>}
                     <p><strong>Reg No:</strong> {patient.RegNo}</p>
 
                     <div className="mt-3 flex gap-2">

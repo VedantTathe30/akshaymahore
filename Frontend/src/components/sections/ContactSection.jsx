@@ -6,6 +6,7 @@ const ContactSection = () => {
   const [formData, setFormData] = useState({
     Name: '',
     MobileNo: '',
+    Email: '',
     Message: '',
   });
 
@@ -23,7 +24,7 @@ const ContactSection = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/send-message`, formData);
+    await axios.post(`${import.meta.env.VITE_API_URL}/send-message`, formData);
       toast.success('Message sent successfully!', {
         duration: 3000,
         position: 'top-right',
@@ -35,7 +36,7 @@ const ContactSection = () => {
         },
         icon: '✉️',
       });
-      setFormData({ Name: '', MobileNo: '', Message: '' });
+      setFormData({ Name: '', MobileNo: '', Email: '', Message: '' });
     } catch (error) {
       toast.error('Failed to send message. Please try again.', {
         duration: 3000,
@@ -86,6 +87,21 @@ const ContactSection = () => {
               placeholder="Your Mobile Number (10 digits)"
               required
               value={formData.MobileNo}
+              onChange={handleChange}
+              disabled={loading}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">
+              Email (optional)
+            </label>
+            <input
+              id="email"
+              name="Email"
+              type="email"
+              className="w-full border border-gray-300 p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+              placeholder="Your Email (optional)"
+              value={formData.Email}
               onChange={handleChange}
               disabled={loading}
             />

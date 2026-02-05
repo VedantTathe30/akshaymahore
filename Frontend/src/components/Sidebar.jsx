@@ -51,6 +51,7 @@ const Sidebar = () => {
           <a href="#education" className="block hover:text-orange-300">Education</a>
           <a href="#location" className="block hover:text-orange-300">Location</a>
           <a href="#contact" className="block hover:text-orange-300">Contact Me</a>
+          <a href="/register" className="block hover:text-orange-300">Patient Registration</a>
         </nav>
         <footer className="mt-auto text-center text-lg text-gray-900 ">
           © Developed by{' '}
@@ -119,6 +120,7 @@ const Sidebar = () => {
           <a href="#contact" onClick={toggleMenu} className="block hover:text-orange-300">
             Contact Me
           </a>
+          <a href="/register" onClick={toggleMenu} className="block hover:text-orange-300">Patient Registration</a>
         </nav>
         <footer className="mt-10 text-center text-gray-800 text-lg">
           © Developed by{' '}

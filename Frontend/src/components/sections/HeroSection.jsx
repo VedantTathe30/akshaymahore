@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import landscape_img from '../../assets/images/hero_img_cabin.png';
 
 const HeroSection = () => {
@@ -73,6 +74,7 @@ const HeroSection = () => {
 
     checkClinicStatus();
   }, []);
+  const navigate = useNavigate();
 
   return (
     <section
@@ -99,6 +101,14 @@ const HeroSection = () => {
             Currently: <span>{clinicStatus || 'Loading...'}</span>
           </span>
         </p>
+        <div className="mt-4">
+          <button
+            onClick={() => navigate('/register')}
+            className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 cursor-pointer shadow-lg"
+          >
+            Create Account
+          </button>
+        </div>
       </div>
       </div>
     </section>

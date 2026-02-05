@@ -98,6 +98,12 @@ const ReadMessages = () => {
                         Call
                       </button>
                     </div>
+                    {msg.Email && (
+                      <div className="flex items-center mt-2">
+                        <strong>Email:</strong>
+                        <a href={`mailto:${msg.Email}`} className="ml-1 text-blue-600 hover:underline">{msg.Email}</a>
+                      </div>
+                    )}
                     <p className="mt-2"><strong>Message:</strong> {msg.Message}</p>
                     {msg.createdAt && (
                       <div className="flex items-center mt-2 text-sm text-gray-500">
