@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from '../config/axios';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import Sidebar from '../components/Sidebar';
 
 const PublicRegister = () => {
   const [form, setForm] = useState({ Name: '', MobileNo: '', Email: '', RegNo: '' });
@@ -45,8 +46,10 @@ const PublicRegister = () => {
   // No OTP UI on frontend: email/mobile OTP flows removed per backend policy.
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl w-full bg-white rounded-xl shadow-xl p-8">
+    <div className="min-h-[70vh] flex">
+      <Sidebar />
+      <main className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl w-full bg-white rounded-xl shadow-xl p-8">
         <div className="flex items-start gap-4">
           <div className="flex-1">
             <h3 className="text-2xl font-extrabold text-gray-900">Patient Registration</h3>
@@ -134,7 +137,8 @@ const PublicRegister = () => {
             <button type="submit" disabled={!emailVerifiedLocal || registering} className={`px-6 py-3 rounded-md text-white font-semibold ${emailVerifiedLocal ? (registering ? 'bg-gray-500' : 'bg-orange-600 hover:bg-orange-700') : 'bg-gray-300'}`}>{registering ? 'Registering...' : 'Create Account'}</button>
           </div>
         </form>
-      </div>
+        </div>
+      </main>
     </div>
   );
 };
