@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 
 const galleryRoutes = require("./routes/gallery.routes");
 const patientGalleryRoutes = require("./routes/patientGallery.routes");
+const publicPatientRoutes = require("./routes/public.routes");
 
 require('dotenv').config();
 const app = express();
@@ -60,6 +61,10 @@ console.log("✅ Loading gallery routes...");
 
 app.use("/patient-gallery", patientGalleryRoutes);
 console.log("✅ Loading patient gallery routes...");
+
+// Public patient registration API (public, no auth required)
+app.use('/api/patients/public', publicPatientRoutes);
+console.log('✅ Loading public patient registration routes...');
 
 // app.use("/patient-gallery-messages", patientGalleryMessageRoutes);
 // console.log("✅ Loading patient gallery message routes...");

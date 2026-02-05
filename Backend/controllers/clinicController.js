@@ -90,9 +90,10 @@ searchData: async (req, res) => {
           { Name: { $regex: regex } },
           { MobileNo: { $regex: regex } },
           { RegNo: { $regex: regex } },
+          { Email: { $regex: regex } },
         ],
       },
-      '_id Name MobileNo RegNo'
+      '_id Name MobileNo RegNo Email'
     );
 
     res.status(200).json(results);
@@ -106,8 +107,10 @@ searchData: async (req, res) => {
 updatePatient: async (req, res) => {
   try {
     const { id } = req.params;
-    const { Name, MobileNo, RegNo } = req.body;
-    await User.findByIdAndUpdate(id, { Name, MobileNo, RegNo });
+    const { Name, MobileNo, RegNo, Email } = req.body;
+    const update = { Name, MobileNo, RegNo };
+    if (typeof Email !== 'undefined') update.Email = Email;
+    await User.findByIdAndUpdate(id, update);
     res.status(200).json({ message: 'Patient updated successfully!' });
   } catch (err) {
     console.error('Update error:', err);
@@ -200,15 +203,25 @@ delPatient: async (req, res) => {
 
   //users
   addPatient: async (req, res) => {
-    const { Name, MobileNo, RegNo } = req.body;
-    console.log(req.body);
-    console.log(Name, MobileNo, RegNo);
-    await User.create({
-      Name: Name,
-      MobileNo: MobileNo,
-      RegNo: RegNo
-    });
-    res.status(201).json({ message: 'Patient Added Successfully..!' });
+    try {
+      const { Name, MobileNo, RegNo, Email } = req.body;
+      console.log(req.body);
+      console.log(Name, MobileNo, RegNo, Email);
+      await User.create({
+        Name: Name,
+        MobileNo: MobileNo,
+        RegNo: RegNo,
+        Email: Email
+      });
+      res.status(201).json({ message: 'Patient Added Successfully..!' });
+    } catch (err) {
+      console.error('Add patient failed:', err);
+      // Forward validation errors to client
+      if (err && err.name === 'ValidationError') {
+        return res.status(400).json({ error: 'Validation failed', details: err.errors });
+      }
+      res.status(500).json({ error: 'Internal server error' });
+    }
   },
 
 
@@ -425,12 +438,15 @@ resetEduData: async (req, res) => {
   //messages
   sendMessage: async (req, res) => {
     try {
-      const { Name, MobileNo, Message, email } = req.body;
+      const { Name, MobileNo, Message } = req.body;
+      // accept either `Email` (frontend) or `email`
+      const Email = req.body.Email || req.body.email || '';
 
-      // Save to database
+      // Save to database (include Email if provided)
       const newMessage = await MessageModel.create({
         Name,
         MobileNo,
+        Email,
         Message,
       });
 
@@ -438,7 +454,7 @@ resetEduData: async (req, res) => {
       const { sendEmailNotification } = require('../utils/emailService');
       await sendEmailNotification({
         name: Name,
-        email: email || 'Not provided',
+        email: Email || 'Not provided',
         mobile: MobileNo,
         message: Message
       });

@@ -10,6 +10,12 @@ const messageSchema = mongoose.Schema({
         type: String,
         trim: true
     },
+    Email: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        sparse: true
+    },
     Message: {
         type: String,
         trim: true,
